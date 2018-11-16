@@ -4,9 +4,7 @@
   "description": "A node client for accessing FT Email Platform’s ESP’s APIs",
   "main": "index.js",
   "scripts": {
-    "commitmsg": "secret-squirrel-commitmsg",
     "lint": "eslint \"**/*.js\" && echo \"✓ Linted\"",
-    "precommit": "secret-squirrel",
     "test": "npm -s run lint && npm -s run unit-test",
     "unit-test": "export NODE_ENV=test CONSOLE_LOG_LEVEL=nope >&1; mocha tests/**/*.js --recursive --globals fetch,Response,Headers,Request --check-leaks --timeout 10s && echo \"✓ Unit tests\""
   },
@@ -31,5 +29,11 @@
     "mocha": "^5.2.0",
     "nock": "^10.0.2",
     "sinon": "^7.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "secret-squirrel-commitmsg",
+      "pre-commit": "secret-squirrel"
+    }
   }
 }
