@@ -1,0 +1,35 @@
+{
+  "name": "email-esp-client",
+  "version": "0.0.0",
+  "description": "A node client for accessing FT Email Platform’s ESP’s APIs",
+  "main": "index.js",
+  "scripts": {
+    "commitmsg": "secret-squirrel-commitmsg",
+    "lint": "eslint \"**/*.js\" && echo \"✓ Linted\"",
+    "precommit": "secret-squirrel",
+    "test": "npm -s run lint && npm -s run unit-test",
+    "unit-test": "export NODE_ENV=test CONSOLE_LOG_LEVEL=nope >&1; mocha tests/**/*.js --recursive --globals fetch,Response,Headers,Request --check-leaks --timeout 10s && echo \"✓ Unit tests\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Financial-Times/email-esp-client.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@financial-times/n-logger": "^6.0.3",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "@financial-times/secret-squirrel": "^2.11.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prefer-object-spread": "^1.2.1",
+    "husky": "^1.1.4",
+    "mocha": "^5.2.0",
+    "nock": "^10.0.2",
+    "sinon": "^7.1.1"
+  }
+}

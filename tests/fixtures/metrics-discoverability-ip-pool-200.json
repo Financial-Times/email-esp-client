@@ -1,0 +1,20 @@
+{
+    "results": [
+        {
+            "count_targeted": 901056,
+            "ip_pool": "automated"
+        },
+        {
+            "count_targeted": 810171,
+            "ip_pool": "editorial"
+        },
+        {
+            "count_targeted": 63033,
+            "ip_pool": "marketing"
+        },
+        {
+            "count_targeted": 16746,
+            "ip_pool": "notice"
+        }
+    ]
+}
