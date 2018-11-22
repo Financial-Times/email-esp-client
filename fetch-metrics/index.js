@@ -8,7 +8,7 @@ const returnJsonIfResponseOk = require('./_return-json-if-response-ok');
 module.exports = config => ({
 	apiName,
 	fromIsoDatetime = getIsoDatetimeFrom({ hoursAgo: 1 }),
-	timezone = 'UTC',
+	timezone = 'Europe/London',
 	metricNames
 } = {}) => {
 	if (!apiName || !metricNames) {
