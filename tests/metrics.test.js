@@ -2,16 +2,15 @@ const { expect } = require('chai').use(require('chai-as-promised'));
 const nock = require('nock');
 const { useFakeTimers } = require('sinon');
 
-const testEspHost = 'http://test-esp-host';
+const testEspHost = 'https://test-esp-host';
 const testEspMetricsApiKey = 'test-esp-metrics-api-key';
 const espMetricsBaseUrl = `${testEspHost}/api/v1/metrics`;
 const defaultQueryParams = [
 	'from=1888-01-10T00:00',
-	'timezone=UTC',
-	'metrics=count_injected,count_hard_bounce'
+	'timezone=Europe/London'
 ];
 
-describe('Fetch ESP metrics:', () => {
+describe('Fetch ESP deliverability metrics:', () => {
 	let fetchMetrics;
 
 	before(() => {
@@ -26,18 +25,19 @@ describe('Fetch ESP metrics:', () => {
 
 	after(() => {
 		this.clock.restore();
-		nock.cleanAll();
+		nock.restore();
 		nock.enableNetConnect();
 	});
 
-	describe('Deliverability by IP pool', () => {
+	describe('IP pool endpoint', () => {
 		const ipPoolFixtures = {
 			ok: require('./fixtures/metrics-discoverability-ip-pool-200.json'),
 			badRequest: require('./fixtures/metrics-discoverability-ip-pool-400.json'),
 			serverError: require('./fixtures/metrics-discoverability-ip-pool-500.json')
 		};
 
-		const ipPoolUrl = `/deliverability/ip-pool?${defaultQueryParams.join('&')}`;
+		const exampleMetrics = 'metrics=count_injected,count_hard_bounce';
+		const ipPoolUrl = `/deliverability/ip-pool?${defaultQueryParams.join('&')}&${exampleMetrics}`;
 		const goodParams = {
 			apiName: 'ipPool',
 			metricNames: new Set(['count_injected', 'count_hard_bounce'])
@@ -93,8 +93,8 @@ describe('Fetch ESP metrics:', () => {
 					nock.cleanAll();
 
 					const customFrom = '2018-01-01T10:00';
-					const [, defaultTimezone, defaultMetrics] = defaultQueryParams;
-					const ipPoolUrlCustomFrom = `/deliverability/ip-pool?from=${customFrom}&${defaultTimezone}&${defaultMetrics}`;
+					const [, defaultTimezone] = defaultQueryParams;
+					const ipPoolUrlCustomFrom = `/deliverability/ip-pool?from=${customFrom}&${defaultTimezone}&${exampleMetrics}`;
 
 					const nocked = nock(espMetricsBaseUrl)
 						.get(ipPoolUrlCustomFrom)
@@ -135,12 +135,6 @@ describe('Fetch ESP metrics:', () => {
 
 		describe('When not everything is great tbqh', () => {
 			afterEach(nock.cleanAll);
-
-			it('rejects if no params are passed in', () => {
-				const promise = fetchMetrics();
-
-				return expect(promise).to.be.rejectedWith(Error);
-			});
 
 			it('rejects if no apiName is passed in', () => {
 				const promise = fetchMetrics({
@@ -198,6 +192,16 @@ describe('Fetch ESP metrics:', () => {
 
 				return expect(promise).to.be.rejectedWith(Error);
 			});
+		});
+	});
+
+	describe('General failures', () => {
+		afterEach(nock.cleanAll);
+
+		it('rejects if no params are passed in', () => {
+			const promise = fetchMetrics();
+
+			return expect(promise).to.be.rejectedWith(Error);
 		});
 	});
 });
