@@ -9,7 +9,8 @@ module.exports = config => ({
 	apiName,
 	fromIsoDatetime = getIsoDatetimeFrom({ hoursAgo: 1 }),
 	timezone = 'Europe/London',
-	metricNames
+	metricNames,
+	orderBy
 } = {}) => {
 	if (!apiName || !metricNames) {
 		const message = 'Expected an object to be passed in with an `apiName` string and `metricNames` array of strings.';
@@ -23,7 +24,7 @@ module.exports = config => ({
 		return Promise.reject(new Error(message));
 	}
 
-	const path = buildPath({ apiName, apiEndpoints, fromIsoDatetime, timezone, metricNames });
+	const path = buildPath({ apiName, apiEndpoints, fromIsoDatetime, timezone, metricNames, orderBy });
 
 	return callFetch({ config, path })
 		.then(returnJsonIfResponseOk)

@@ -130,6 +130,26 @@ describe('Fetch ESP deliverability metrics:', () => {
 						expect(nocked.isDone()).to.be.true;
 					});
 				});
+
+				it('passes on requested orderBy field to the API', () => {
+					nock.cleanAll();
+
+					const [defaultFrom, defaultTimezone] = defaultQueryParams;
+					const ipPoolUrlCustomOrder = `/deliverability/ip-pool?${defaultFrom}&${defaultTimezone}&${exampleMetrics}&order_by=count_injected`;
+
+					const nocked = nock(espMetricsBaseUrl)
+						.get(ipPoolUrlCustomOrder)
+						.reply(200, ipPoolFixtures.ok);
+
+					const params = {
+						...goodParams,
+						orderBy: 'count_injected'
+					};
+
+					return fetchMetrics(params).then(() => {
+						expect(nocked.isDone()).to.be.true;
+					});
+				});
 			});
 		});
 
