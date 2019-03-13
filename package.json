@@ -35,5 +35,8 @@
       "commit-msg": "secret-squirrel-commitmsg",
       "pre-commit": "secret-squirrel"
     }
+  },
+  "engines": {
+    "node": "^10.15.3"
   }
 }
