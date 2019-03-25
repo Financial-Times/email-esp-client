@@ -35,5 +35,6 @@
       "commit-msg": "secret-squirrel-commitmsg",
       "pre-commit": "secret-squirrel"
     }
-  }
+  },
+  "heroku-run-build-script": true
 }
